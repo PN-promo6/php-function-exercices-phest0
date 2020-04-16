@@ -1,26 +1,37 @@
 <?php
 
-function canWrite($magazine, $message)
+function CanWrite($magazine, $messageToWrite)
 {
-    $condition = true;
-    $lettersDisable = [];
-    $lettersEnable = str_split($magazine);
-    for ($i = 0; $i < strlen($message); $i++) {
-        if (array_search($magazine[$i], $lettersDisable) == true) {
-            $condition = false;
-        } else {
-        }
-    }
-}
-function canWrite2($magazine, $message)
-{
-    $allMyLetters = array();
+    $nbOccurenceByLetter = array();
     for ($i = 0; $i < strlen($magazine); $i++) {
         $currentLetter = $magazine[$i];
-        if (array_key_exists($currentLetter, $allMyLetters) {
-            $allMyLetters[$currentLetter] += 1;
-        }else{
-            $allMyLetters[$currentLetter = 1;
+        if (array_key_exists($currentLetter, $nbOccurenceByLetter)) {
+            $nbOccurenceByLetter[$currentLetter] += 1;
+        } else {
+            $nbOccurenceByLetter[$currentLetter] = 1;
         }
     }
+    for ($i = 0; $i < strlen($messageToWrite); $i++) {
+        $letterToWrite = $messageToWrite[$i];
+        if (!array_key_exists($letterToWrite, $nbOccurenceByLetter)) {
+            return false;
+        }
+        if ($nbOccurenceByLetter[$letterToWrite] > 0) {
+            --$nbOccurenceByLetter[$letterToWrite];
+        } else {
+            return false;
+        }
+    }
+    return true;
 }
+
+if (CanWrite("aba", "aaa")) {
+    echo "tu peux ecrire ta lettre";
+} else {
+    echo "tu ne peux ecrire ta lettre";
+}
+echo "\n--------------------------\n";
+echo CanWrite("bonjour", "a"); // returns false 
+echo "\n--------------------------\n";
+echo CanWrite("bonjour, je suis content", "jour j"); // returns true
+echo "\n--------------------------\n";
